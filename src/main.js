@@ -6,6 +6,8 @@ import store from './store'
 import Vant from 'vant'
 import 'vant/lib/button/style'
 
+import 'amfe-flexible'
+
 Vue.use(Vant)
 
 Vue.config.productionTip = false
