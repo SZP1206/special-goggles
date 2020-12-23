@@ -12,7 +12,11 @@
         :key="channel.id"
         :title="channel.name"
       >
-        {{ channel.name }}
+        <article-list :channel="channel">
+          <!-- 文章列表 -->
+          <!-- 文章列表 -->
+          <!-- 文章列表 -->
+        </article-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -20,10 +24,11 @@
 
 <script>
 import { getChannels } from '@/api/user'
+import ArticleList from './components/article-list.vue'
 
 export default {
   name: 'HomeIndex',
-  components: {},
+  components: { ArticleList },
   props: {},
   data() {
     return {
