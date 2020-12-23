@@ -11,11 +11,12 @@
         finished-text="我是有底线的"
         @load="onLoad"
       >
-        <van-cell
+        <!-- 文章列表项 -->
+        <article-item
           v-for="article in articleList"
-          :key="article.art_id"
-          :title="article.title"
-        />
+          :key="article.id"
+          :article="article"
+        ></article-item>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -23,10 +24,11 @@
 
 <script>
 import { getArticles } from '@/api/article'
+import ArticleItem from '@/components/article-item.vue'
 
 export default {
   name: 'ArticleList',
-  components: {},
+  components: { ArticleItem },
   props: {
     channel: {
       type: Object,
