@@ -6,6 +6,7 @@
       :show-error="false"
       :show-error-message="false"
       validate-first
+      ref="loginForm"
       @submit="onLogin"
       @failed="onFail"
     >
@@ -16,6 +17,7 @@
           left-icon="phone-circle-o"
           placeholder="请输入手机号"
           :rules="formRules.mobile"
+          name="mobile"
         />
         <van-field
           v-model="user.code"
@@ -25,7 +27,9 @@
           :rules="formRules.code"
         >
           <template #button>
-            <van-button size="mini" type="plain" round>发送验证码</van-button>
+            <van-button size="mini" type="plain" round @click.prevent="onSMS"
+              >发送验证码</van-button
+            >
           </template>
         </van-field>
       </van-cell-group>
@@ -36,7 +40,7 @@
 </template>
 
 <script>
-import { login } from '@/api/user'
+import { login, getSMS } from '@/api/user'
 
 export default {
   name: 'LoginIndex',
@@ -74,18 +78,36 @@ export default {
         console.log(res)
         this.$toast.success('登录成功')
       } catch (error) {
-        console.log(error)
         this.$toast.fail('登录失败')
       }
     },
 
     // 自定义验证失败的提示
     onFail(error) {
-      console.log(error)
+      // console.log(error)
       this.$toast({
         message: error.errors[0].message,
         position: 'top',
       })
+    },
+
+    // 发送验证码
+    async onSMS() {
+      try {
+        // 校验失败后会触发 onFail 事件
+        await this.$refs.loginForm.validate('mobile')
+
+        const res = await getSMS(this.user.mobile)
+        console.log(res)
+      } catch (error) {
+        console.dir(error)
+        if (error.response.status === 429) {
+          this.$toast({
+            message: '发送太频繁了，请稍后重试',
+            position: 'top',
+          })
+        }
+      }
     },
   },
 }
