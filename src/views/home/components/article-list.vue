@@ -1,6 +1,10 @@
 <template>
   <div class="article-list">
-    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+    <van-pull-refresh
+      :success-text="freshText"
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
       <van-list
         v-model="loading"
         :finished="finished"
@@ -36,6 +40,7 @@ export default {
       finished: false,
       refreshing: false,
       timestamp: null,
+      freshText: '',
     }
   },
   computed: {},
@@ -62,14 +67,18 @@ export default {
         this.finished = true
       }
     },
-    onRefresh() {
-      // 清空列表数据
-      this.finished = false
+    async onRefresh() {
+      const res = await getArticles({
+        channel_id: this.channel.id,
+        timestamp: Date.now(),
+        with_top: 1,
+      })
 
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true
-      this.onLoad()
+      const articleList = res.data.data.results
+      this.articleList.unshift(...articleList)
+
+      this.refreshing = false
+      this.freshText = `刷新了${articleList.length}条数据`
     },
   },
 }
