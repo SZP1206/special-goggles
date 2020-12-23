@@ -116,6 +116,9 @@ export default {
 
         const res = await getSMS(this.user.mobile)
         console.log(res)
+        this.$toast.success('登录成功')
+        this.$store.commit('setUser', res.data.data)
+        this.$router.back()
         this.isCountDownShow = true
       } catch (error) {
         console.dir(error)
