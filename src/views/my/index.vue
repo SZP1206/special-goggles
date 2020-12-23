@@ -1,6 +1,6 @@
 <template>
   <div class="my-container">
-    <van-cell-group>
+    <van-cell-group v-if="user">
       <van-cell title="用户昵称" center>
         <template #icon>
           <van-image
@@ -15,34 +15,39 @@
           <van-button round size="small">编辑资料</van-button>
         </template>
       </van-cell>
+
+      <van-grid>
+        <van-grid-item>
+          <template #text>
+            <div class="num">123</div>
+            <div class="text">新闻</div>
+          </template>
+        </van-grid-item>
+        <van-grid-item>
+          <template #text>
+            <div class="num">123</div>
+            <div class="text">关注</div>
+          </template>
+        </van-grid-item>
+        <van-grid-item>
+          <template #text>
+            <div class="num">123</div>
+            <div class="text">粉丝</div>
+          </template>
+        </van-grid-item>
+        <van-grid-item>
+          <template #text>
+            <div class="num">123</div>
+            <div class="text">获赞</div>
+          </template>
+        </van-grid-item>
+      </van-grid>
     </van-cell-group>
 
-    <van-grid>
-      <van-grid-item>
-        <template #text>
-          <div class="num">123</div>
-          <div class="text">新闻</div>
-        </template>
-      </van-grid-item>
-      <van-grid-item>
-        <template #text>
-          <div class="num">123</div>
-          <div class="text">关注</div>
-        </template>
-      </van-grid-item>
-      <van-grid-item>
-        <template #text>
-          <div class="num">123</div>
-          <div class="text">粉丝</div>
-        </template>
-      </van-grid-item>
-      <van-grid-item>
-        <template #text>
-          <div class="num">123</div>
-          <div class="text">获赞</div>
-        </template>
-      </van-grid-item>
-    </van-grid>
+    <div v-else class="login">
+      <van-icon name="phone" color="#1989fa" />
+      <div>点击登录</div>
+    </div>
 
     <van-grid clickable :column-num="2">
       <van-grid-item class="like" icon="like-o" text="收藏" to="/" />
@@ -51,11 +56,13 @@
 
     <van-cell title="消息通知" is-link url="/" />
     <van-cell title="智能助手" is-link to="/" />
-    <van-cell class="logout" title="退出登录" is-link to="/" />
+    <van-cell v-if="user" class="logout" title="退出登录" is-link to="/" />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'MyIndex',
   components: {},
@@ -63,7 +70,9 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    ...mapState(['user']),
+  },
   watch: {},
   created() {},
   mounted() {},
@@ -102,6 +111,16 @@ export default {
     .van-cell__title {
       text-align: center;
       color: #d86262;
+    }
+  }
+
+  .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .van-icon-phone {
+      font-size: 50px;
     }
   }
 }

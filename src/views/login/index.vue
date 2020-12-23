@@ -93,6 +93,8 @@ export default {
         const res = await login(this.user)
         console.log(res)
         this.$toast.success('登录成功')
+        this.$store.commit('setUser', res.data.data)
+        this.$router.back()
       } catch (error) {
         this.$toast.fail('登录失败')
       }
@@ -115,10 +117,8 @@ export default {
         this.isSMSBtnLoading = true
 
         const res = await getSMS(this.user.mobile)
-        console.log(res)
-        this.$toast.success('登录成功')
-        this.$store.commit('setUser', res.data.data)
-        this.$router.back()
+        console.log(res.data.data)
+        this.$toast.success('发送成功')
         this.isCountDownShow = true
       } catch (error) {
         console.dir(error)
