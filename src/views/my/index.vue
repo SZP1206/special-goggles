@@ -1,14 +1,14 @@
 <template>
   <div class="my-container">
     <van-cell-group v-if="user">
-      <van-cell title="用户昵称" center>
+      <van-cell :title="userData.name" center>
         <template #icon>
           <van-image
             width="50"
             height="50"
             fit="cover"
             round
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="userData.photo"
           />
         </template>
         <template #right-icon>
@@ -19,25 +19,25 @@
       <van-grid>
         <van-grid-item>
           <template #text>
-            <div class="num">123</div>
+            <div class="num">{{ userData.art_count }}</div>
             <div class="text">新闻</div>
           </template>
         </van-grid-item>
         <van-grid-item>
           <template #text>
-            <div class="num">123</div>
+            <div class="num">{{ userData.follow_count }}</div>
             <div class="text">关注</div>
           </template>
         </van-grid-item>
         <van-grid-item>
           <template #text>
-            <div class="num">123</div>
+            <div class="num">{{ userData.fans_count }}</div>
             <div class="text">粉丝</div>
           </template>
         </van-grid-item>
         <van-grid-item>
           <template #text>
-            <div class="num">123</div>
+            <div class="num">{{ userData.like_count }}</div>
             <div class="text">获赞</div>
           </template>
         </van-grid-item>
@@ -68,19 +68,24 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getUser } from '@/api/user'
 
 export default {
   name: 'MyIndex',
   components: {},
   props: {},
   data() {
-    return {}
+    return {
+      userData: {},
+    }
   },
   computed: {
     ...mapState(['user']),
   },
   watch: {},
-  created() {},
+  created() {
+    this.loadUser()
+  },
   mounted() {},
   methods: {
     onLogout() {
@@ -95,6 +100,12 @@ export default {
         .catch(() => {
           // on cancel
         })
+    },
+
+    async loadUser() {
+      const { data } = await getUser()
+      this.userData = data.data
+      console.log(this.userData)
     },
   },
 }
