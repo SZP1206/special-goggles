@@ -39,6 +39,7 @@
               size="mini"
               type="plain"
               round
+              :loading="isSMSBtnLoading"
               @click.prevent="onSMS"
               >发送验证码</van-button
             >
@@ -79,6 +80,7 @@ export default {
       },
       countDown: 60 * 1000,
       isCountDownShow: false,
+      isSMSBtnLoading: false,
     }
   },
   computed: {},
@@ -110,6 +112,7 @@ export default {
       try {
         // 校验失败后会触发 onFail 事件
         await this.$refs.loginForm.validate('mobile')
+        this.isSMSBtnLoading = true
 
         const res = await getSMS(this.user.mobile)
         console.log(res)
@@ -123,6 +126,8 @@ export default {
           })
         }
       }
+
+      this.isSMSBtnLoading = false
     },
   },
 }
