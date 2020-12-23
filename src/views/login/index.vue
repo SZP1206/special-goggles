@@ -27,7 +27,19 @@
           :rules="formRules.code"
         >
           <template #button>
-            <van-button size="mini" type="plain" round @click.prevent="onSMS"
+            <van-count-down
+              v-if="isCountDownShow"
+              :time="countDown"
+              format=" ss s"
+              @finish="isCountDownShow = false"
+            />
+
+            <van-button
+              v-else
+              size="mini"
+              type="plain"
+              round
+              @click.prevent="onSMS"
               >发送验证码</van-button
             >
           </template>
@@ -65,6 +77,8 @@ export default {
           { pattern: /^\d{6}$/, message: '验证码格式错误' },
         ],
       },
+      countDown: 60 * 1000,
+      isCountDownShow: false,
     }
   },
   computed: {},
@@ -99,6 +113,7 @@ export default {
 
         const res = await getSMS(this.user.mobile)
         console.log(res)
+        this.isCountDownShow = true
       } catch (error) {
         console.dir(error)
         if (error.response.status === 429) {
