@@ -45,7 +45,7 @@
     </van-cell-group>
 
     <div v-else class="login">
-      <van-icon name="phone" color="#1989fa" />
+      <van-icon name="phone" color="#1989fa" @click="$router.push('/login')" />
       <div>点击登录</div>
     </div>
 
@@ -56,7 +56,13 @@
 
     <van-cell title="消息通知" is-link url="/" />
     <van-cell title="智能助手" is-link to="/" />
-    <van-cell v-if="user" class="logout" title="退出登录" is-link to="/" />
+    <van-cell
+      v-if="user"
+      class="logout"
+      title="退出登录"
+      is-link
+      @click="onLogout"
+    />
   </div>
 </template>
 
@@ -76,7 +82,21 @@ export default {
   watch: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    onLogout() {
+      this.$dialog
+        .confirm({
+          title: '确认退出吗？',
+        })
+        .then(() => {
+          // on confirm
+          this.$store.commit('setUser', null)
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
+  },
 }
 </script>
 
