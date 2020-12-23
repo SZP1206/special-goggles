@@ -7,13 +7,19 @@
         finished-text="我是有底线的"
         @load="onLoad"
       >
-        <van-cell v-for="item in list" :key="item" :title="item" />
+        <van-cell
+          v-for="article in articleList"
+          :key="article.art_id"
+          :title="article.title"
+        />
       </van-list>
     </van-pull-refresh>
   </div>
 </template>
 
 <script>
+import { getArticles } from '@/api/article'
+
 export default {
   name: 'ArticleList',
   components: {},
@@ -25,10 +31,11 @@ export default {
   },
   data() {
     return {
-      list: [],
+      articleList: [],
       loading: false,
       finished: false,
       refreshing: false,
+      timestamp: null,
     }
   },
   computed: {},
@@ -36,22 +43,24 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    onLoad() {
-      setTimeout(() => {
-        if (this.refreshing) {
-          this.list = []
-          this.refreshing = false
-        }
+    async onLoad() {
+      const res = await getArticles({
+        channel_id: this.channel.id,
+        timestamp: this.timestamp || Date.now(),
+        with_top: 1,
+      })
+      console.log(res)
 
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        this.loading = false
+      const articleList = res.data.data.results
+      this.articleList.push(...articleList)
 
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 1000)
+      this.loading = false
+
+      if (articleList) {
+        this.timestamp = res.data.data.pre_timestamp
+      } else {
+        this.finished = true
+      }
     },
     onRefresh() {
       // 清空列表数据
