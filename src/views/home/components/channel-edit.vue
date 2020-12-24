@@ -3,12 +3,18 @@
     <van-cell>
       <template #title> 我的频道 </template>
       <template>
-        <van-button class="editBtn" type="danger" plain size="small" round >编辑</van-button>
+        <van-button class="editBtn" type="danger" plain size="small" round
+          >编辑</van-button
+        >
       </template>
     </van-cell>
 
     <van-grid :gutter="10">
-      <van-grid-item v-for="(value, index) in 8" :key="index" text="文字" />
+      <van-grid-item
+        v-for="channel in channels"
+        :key="channel.id"
+        :text="channel.name"
+      />
     </van-grid>
 
     <van-cell>
@@ -25,7 +31,12 @@
 export default {
   name: 'ChannelEdit',
   components: {},
-  props: {},
+  props: {
+    channels: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {}
   },
@@ -41,7 +52,7 @@ export default {
 .channel-edit {
   padding-top: 60px;
 
-  .editBtn{
+  .editBtn {
     width: 64px;
   }
 

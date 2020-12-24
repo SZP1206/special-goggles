@@ -33,7 +33,7 @@
       :style="{ height: '100%' }"
     >
       <!-- 频道编辑组件 -->
-      <channel-edit></channel-edit>
+      <channel-edit :channels="channels"></channel-edit>
     </van-popup>
   </div>
 </template>
