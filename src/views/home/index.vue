@@ -18,7 +18,20 @@
           <!-- 文章列表 -->
         </article-list>
       </van-tab>
+
+      <div class="editBtn" slot="nav-right">
+        <van-icon name="wap-nav" @click="isEditChannelShow = true" />
+      </div>
     </van-tabs>
+
+    <van-popup
+      v-model="isEditChannelShow"
+      position="bottom"
+      closeable
+      round
+      get-container="body"
+      :style="{ height: '100%' }"
+    />
   </div>
 </template>
 
@@ -34,6 +47,7 @@ export default {
     return {
       active: 0,
       channels: [],
+      isEditChannelShow: false,
     }
   },
   computed: {},
@@ -61,6 +75,10 @@ export default {
       color: #323233;
       right: 18px;
     }
+  }
+
+  .editBtn {
+    line-height: 44px;
   }
 }
 </style>
