@@ -22,12 +22,18 @@
     </van-cell>
 
     <van-grid :gutter="10">
-      <van-grid-item v-for="(value, index) in 8" :key="index" text="文字" />
+      <van-grid-item
+        v-for="channel in recommendChannel"
+        :key="channel.id"
+        :text="channel.name"
+      />
     </van-grid>
   </div>
 </template>
 
 <script>
+import { getAllChannel } from '@/api/channel'
+
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -38,13 +44,50 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      allChannel: [],
+    }
   },
-  computed: {},
+  computed: {
+    recommendChannel() {
+      return this.allChannel.filter(allChannel => {
+        return !this.channels.find(userChannel => {
+          return userChannel.id === allChannel.id
+        })
+      })
+    },
+  },
   watch: {},
-  created() {},
+  created() {
+    this.loadAllChannel()
+  },
   mounted() {},
-  methods: {},
+  methods: {
+    async loadAllChannel() {
+      const { data } = await getAllChannel()
+      this.allChannel = data.data.channels
+      console.log(this.allChannel)
+
+      // const arr1 = [1, 2, 3, 4, 5, 6]
+      // console.log(arr1.includes(2, 2)) // false
+      // console.log(arr1.includes(2, -1)) // false
+      // console.log(arr1.includes(2, -5)) // true
+      // console.log(arr1.includes(2, -4)) // false
+
+      // arr.includes(valueToFind[, fromIndex])
+      // 第一个参数 valueToFind ：要查找的元素
+
+      // 第二个参数：要从索引“fromIndex”处开始查找。
+      // 若为负数，则从“array.length + fromIndex”处开始查找
+
+      // const arr2 = [1, 2, 3]
+      // const arr3 = [1, 2, 3, 4, 5]
+      // const newArr = arr3.filter(item => {
+      //   return !arr2.includes(item)
+      // })
+      // console.log(newArr) // [4, 5]
+    },
+  },
 }
 </script>
 
