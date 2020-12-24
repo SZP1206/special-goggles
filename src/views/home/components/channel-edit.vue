@@ -3,17 +3,25 @@
     <van-cell>
       <template #title> 我的频道 </template>
       <template>
-        <van-button class="editBtn" type="danger" plain size="small" round
-          >编辑</van-button
+        <van-button
+          class="editBtn"
+          type="danger"
+          plain
+          size="small"
+          round
+          @click="isEdit = !isEdit"
         >
+          {{ isEdit ? '完成' : '编辑' }}
+        </van-button>
       </template>
     </van-cell>
 
-    <van-grid :gutter="10">
+    <van-grid :gutter="10" clickable>
       <van-grid-item
         v-for="channel in channels"
         :key="channel.id"
         :text="channel.name"
+        :icon="isEdit ? 'clear' : ''"
       />
     </van-grid>
 
@@ -21,11 +29,12 @@
       <template #title> 推荐频道 </template>
     </van-cell>
 
-    <van-grid :gutter="10">
+    <van-grid :gutter="10" clickable>
       <van-grid-item
         v-for="channel in recommendChannel"
         :key="channel.id"
         :text="channel.name"
+        @click="onAdd(channel)"
       />
     </van-grid>
   </div>
@@ -46,6 +55,7 @@ export default {
   data() {
     return {
       allChannel: [],
+      isEdit: false,
     }
   },
   computed: {
@@ -87,6 +97,10 @@ export default {
       // })
       // console.log(newArr) // [4, 5]
     },
+
+    onAdd(channel) {
+      this.channels.push(channel)
+    },
   },
 }
 </script>
@@ -113,6 +127,13 @@ export default {
         font-size: 14px;
         color: #222;
       }
+    }
+    /deep/ .van-icon {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      font-size: 20px;
+      color: #ccc;
     }
   }
 }
