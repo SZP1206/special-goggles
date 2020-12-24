@@ -31,17 +31,21 @@
       round
       get-container="body"
       :style="{ height: '100%' }"
-    />
+    >
+      <!-- 频道编辑组件 -->
+      <channel-edit></channel-edit>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getChannels } from '@/api/user'
 import ArticleList from './components/article-list.vue'
+import ChannelEdit from './components/channel-edit.vue'
 
 export default {
   name: 'HomeIndex',
-  components: { ArticleList },
+  components: { ArticleList, ChannelEdit },
   props: {},
   data() {
     return {
