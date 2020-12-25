@@ -45,7 +45,9 @@
 </template>
 
 <script>
-import { getAllChannel } from '@/api/channel'
+import { getAllChannel, addUserChannel } from '@/api/channel'
+import { mapState } from 'vuex'
+import { setItem } from '@/utils/storage'
 
 export default {
   name: 'ChannelEdit',
@@ -74,6 +76,8 @@ export default {
         })
       })
     },
+
+    ...mapState(['user']),
   },
   watch: {},
   created() {
@@ -106,8 +110,17 @@ export default {
       // console.log(newArr) // [4, 5]
     },
 
-    onAdd(channel) {
+    async onAdd(channel) {
       this.channels.push(channel)
+
+      if (!this.user) {
+        setItem('user-channel', this.channels)
+      } else {
+        const res = await addUserChannel({
+          channels: [{ id: channel.id, seq: this.channels.length }],
+        })
+        console.log(res)
+      }
     },
 
     // 点击用户频道
