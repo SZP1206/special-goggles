@@ -2,7 +2,7 @@
   <div class="home-container">
     <van-nav-bar title="首页">
       <template #right>
-        <van-icon name="search" size="18" />
+        <van-icon name="search" size="18" @click="$router.push('/search')" />
       </template>
     </van-nav-bar>
 
