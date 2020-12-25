@@ -33,7 +33,11 @@
       :style="{ height: '100%' }"
     >
       <!-- 频道编辑组件 -->
-      <channel-edit :channels="channels"></channel-edit>
+      <channel-edit
+        :channels="channels"
+        @close="isEditChannelShow = false"
+        @switchActive="active = $event"
+      ></channel-edit>
     </van-popup>
   </div>
 </template>

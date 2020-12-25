@@ -18,10 +18,11 @@
 
     <van-grid :gutter="10" clickable>
       <van-grid-item
-        v-for="channel in channels"
+        v-for="(channel, index) in channels"
         :key="channel.id"
         :text="channel.name"
-        :icon="isEdit ? 'clear' : ''"
+        :icon="isEdit && index !== 0 ? 'clear' : ''"
+        @click="onUserChannelClick(index)"
       />
     </van-grid>
 
@@ -100,6 +101,27 @@ export default {
 
     onAdd(channel) {
       this.channels.push(channel)
+    },
+
+    // 点击用户频道
+    onUserChannelClick(index) {
+      if (index !== 0 && this.isEdit) {
+        this.deleteChannel(index)
+      } else {
+        this.switchChannel(index)
+      }
+    },
+
+    // 删除用户频道
+    deleteChannel(index) {
+      this.channels.splice(index, 1)
+    },
+
+    // 切换用户频道
+    switchChannel(index) {
+      console.log('switch')
+      this.$emit('switchActive', index)
+      this.$emit('close')
     },
   },
 }
