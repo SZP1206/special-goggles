@@ -121,6 +121,9 @@ export default {
 
     // 删除用户频道
     deleteChannel(index) {
+      if (index <= this.active) {
+        this.$emit('switchActive', this.active - 1)
+      }
       this.channels.splice(index, 1)
     },
 
