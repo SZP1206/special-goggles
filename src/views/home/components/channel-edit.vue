@@ -23,7 +23,7 @@
         :text="channel.name"
         :icon="isEdit && index !== 0 ? 'clear' : ''"
         :class="index === active ? 'activeColor' : ''"
-        @click="onUserChannelClick(index)"
+        @click="onUserChannelClick(channel, index)"
       />
       <!-- :class="index === active ? 'activeColor' : ''"
            :class="{ activeColor: index === active }" -->
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getAllChannel, addUserChannel } from '@/api/channel'
+import { getAllChannel, addUserChannel, deleteUserChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 import { setItem } from '@/utils/storage'
 
@@ -124,20 +124,29 @@ export default {
     },
 
     // 点击用户频道
-    onUserChannelClick(index) {
+    onUserChannelClick(channel, index) {
       if (index !== 0 && this.isEdit) {
-        this.deleteChannel(index)
+        this.deleteChannel(channel, index)
       } else {
         this.switchChannel(index)
       }
     },
 
     // 删除用户频道
-    deleteChannel(index) {
+    async deleteChannel(channel, index) {
       if (index <= this.active) {
         this.$emit('switchActive', this.active - 1)
       }
       this.channels.splice(index, 1)
+
+      if (!this.user) {
+        setItem('user-channel', this.channels)
+      } else {
+        const res = await deleteUserChannel(channel.id)
+        console.log(res)
+        // 204 删除成功.
+        // 注意这是本接口成功调用的返回状态码，body没有数据（没有默认的message）
+      }
     },
 
     // 切换用户频道
