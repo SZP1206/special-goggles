@@ -47,6 +47,8 @@
 import { getChannels } from '@/api/user'
 import ArticleList from './components/article-list.vue'
 import ChannelEdit from './components/channel-edit.vue'
+import { mapState } from 'vuex'
+import { getItem } from '@/utils/storage'
 
 export default {
   name: 'HomeIndex',
@@ -59,7 +61,9 @@ export default {
       isEditChannelShow: false,
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user']),
+  },
   watch: {},
   created() {
     this.loadChannels()
@@ -67,10 +71,28 @@ export default {
   mounted() {},
   methods: {
     async loadChannels() {
-      const res = await getChannels()
-      console.log(res)
-      this.channels = res.data.data.channels
-      console.log(this.channels)
+      if (this.user) {
+        // 已登录，获取线上用户频道
+        const res = await getChannels()
+        console.log(res)
+        this.channels = res.data.data.channels
+      } else {
+        // 未登录，从 localStorage 获取频道列表
+        const localChannels = getItem('user-channel')
+
+        // 判断是否为空
+        if (localChannels) {
+          this.channels = localChannels
+        } else {
+          // 为空，则从线上获取默认推荐列表
+          const res = await getChannels()
+          this.channels = res.data.data.channels
+        }
+      }
+
+      // const res = await getChannels()
+      // console.log(res)
+      // this.channels = res.data.data.channels
     },
   },
 }
