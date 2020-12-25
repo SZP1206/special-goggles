@@ -22,8 +22,11 @@
         :key="channel.id"
         :text="channel.name"
         :icon="isEdit && index !== 0 ? 'clear' : ''"
+        :class="index === active ? 'activeColor' : ''"
         @click="onUserChannelClick(index)"
       />
+      <!-- :class="index === active ? 'activeColor' : ''"
+           :class="{ activeColor: index === active }" -->
     </van-grid>
 
     <van-cell>
@@ -50,6 +53,10 @@ export default {
   props: {
     channels: {
       type: Array,
+      required: true,
+    },
+    active: {
+      type: Number,
       required: true,
     },
   },
@@ -147,7 +154,6 @@ export default {
       background-color: #f4f5f6;
       .van-grid-item__text {
         font-size: 14px;
-        color: #222;
       }
     }
     /deep/ .van-icon {
@@ -156,6 +162,11 @@ export default {
       right: -5px;
       font-size: 20px;
       color: #ccc;
+    }
+  }
+  .activeColor {
+    /deep/ .van-grid-item__text {
+      color: red;
     }
   }
 }

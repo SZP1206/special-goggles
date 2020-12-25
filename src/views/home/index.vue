@@ -35,6 +35,7 @@
       <!-- 频道编辑组件 -->
       <channel-edit
         :channels="channels"
+        :active="active"
         @close="isEditChannelShow = false"
         @switchActive="active = $event"
       ></channel-edit>
