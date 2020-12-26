@@ -1,6 +1,14 @@
 <template>
   <div class="search-container">
-    Search
+    <form action="/">
+      <van-search
+        v-model="searchText"
+        show-action
+        placeholder="请输入搜索关键词"
+        @search="onSearch"
+        @cancel="$router.back()"
+      />
+    </form>
   </div>
 </template>
 
@@ -10,13 +18,19 @@ export default {
   components: {},
   props: {},
   data() {
-    return {}
+    return {
+      searchText: '',
+    }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    onSearch() {
+      console.log('onSearch', this.searchText)
+    },
+  },
 }
 </script>
 
