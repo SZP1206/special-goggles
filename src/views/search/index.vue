@@ -9,13 +9,26 @@
         @cancel="$router.back()"
       />
     </form>
+
+    <!-- 联想建议 -->
+    <suggestion></suggestion>
+
+    <!-- 历史记录 -->
+    <history></history>
+
+    <!-- 搜索结果 -->
+    <result></result>
   </div>
 </template>
 
 <script>
+import History from './components/history.vue'
+import Result from './components/result.vue'
+import Suggestion from './components/suggestion.vue'
+
 export default {
   name: 'SearchIndex',
-  components: {},
+  components: { Suggestion, Result, History },
   props: {},
   data() {
     return {
