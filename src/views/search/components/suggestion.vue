@@ -11,6 +11,7 @@
 
 <script>
 import { getSuggestion } from '@/api/search'
+import { debounce } from 'lodash'
 
 export default {
   name: 'Suggestion',
@@ -29,11 +30,11 @@ export default {
   computed: {},
   watch: {
     searchText: {
-      async handler() {
+      handler: debounce(async function() {
         const res = await getSuggestion(this.searchText)
         this.suggestions = res.data.data.options
         console.log(this.suggestions)
-      },
+      }, 500),
       immediate: true,
     },
   },
