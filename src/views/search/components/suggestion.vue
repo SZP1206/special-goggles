@@ -3,9 +3,11 @@
     <van-cell
       v-for="(suggestion, index) in suggestions"
       :key="index"
-      :title="suggestion"
       icon="search"
-    ></van-cell>
+    >
+      <span slot="title" v-html="highLight(suggestion)"></span>
+      <!-- <template #title v-html="hightLight(suggestion)"></template> -->
+    </van-cell>
   </div>
 </template>
 
@@ -40,7 +42,15 @@ export default {
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    highLight(suggestion) {
+      return suggestion.replace(
+        new RegExp(this.searchText, 'gi'),
+        // eslint-disable-next-line comma-dangle
+        `<span style="color: red">${this.searchText}</span>`
+      )
+    },
+  },
 }
 </script>
 
