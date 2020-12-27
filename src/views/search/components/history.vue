@@ -8,10 +8,7 @@
       </div>
       <!-- <van-icon name="delete" /> -->
     </van-cell>
-    <van-cell title="hello">
-      <van-icon name="close" />
-    </van-cell>
-    <van-cell title="world">
+    <van-cell v-for="(item, index) in history" :key="index" :title="item">
       <van-icon name="close" />
     </van-cell>
   </div>
@@ -21,7 +18,12 @@
 export default {
   name: 'History',
   components: {},
-  props: {},
+  props: {
+    history: {
+      type: Array,
+      requeired: true,
+    },
+  },
   data() {
     return {}
   },
