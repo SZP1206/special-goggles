@@ -7,6 +7,7 @@
     >
       <span slot="title" v-html="highLight(suggestion)"></span>
       <!-- <template #title v-html="hightLight(suggestion)"></template> -->
+      <!-- TODO: template 为什么渲染不出内容？？？ -->
     </van-cell>
   </div>
 </template>
