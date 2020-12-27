@@ -80,7 +80,7 @@ export default {
 
     async loadHistory() {
       // 获取本地搜索历史
-      const localHistory = getItem('search-history')
+      const localHistory = getItem('search-history') || []
 
       // 如果已登录，获取线上搜索历史
       if (this.user) {
