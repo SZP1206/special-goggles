@@ -4,6 +4,7 @@
       v-for="(suggestion, index) in suggestions"
       :key="index"
       icon="search"
+      @click="$emit('search', suggestion)"
     >
       <span slot="title" v-html="highLight(suggestion)"></span>
       <!-- <template #title v-html="hightLight(suggestion)"></template> -->
