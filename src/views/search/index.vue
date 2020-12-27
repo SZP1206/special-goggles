@@ -15,7 +15,7 @@
     <result v-if="isResultShow"></result>
 
     <!-- 联想建议 -->
-    <suggestion v-else-if="searchText"></suggestion>
+    <suggestion v-else-if="searchText" :search-text="searchText"></suggestion>
 
     <!-- 历史记录 -->
     <history v-else></history>
