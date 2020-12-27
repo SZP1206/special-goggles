@@ -12,7 +12,7 @@
     </form>
 
     <!-- 搜索结果 -->
-    <result v-if="isResultShow"></result>
+    <result v-if="isResultShow" :search-text="searchText"></result>
 
     <!-- 联想建议 -->
     <suggestion v-else-if="searchText" :search-text="searchText"></suggestion>
