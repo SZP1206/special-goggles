@@ -23,7 +23,7 @@
     <!-- onSearch($event) === onSearch 【不加括号】 -->
 
     <!-- 历史记录 -->
-    <history v-else :history="history"></history>
+    <history v-else :history="history" @search="onSearch"></history>
 
     <!-- 1、suggestion 和 history 二选一，条件是“输入框是否为空”【二选一，置于判断的末尾】
     2、search 事件切换 result 的展示和隐藏。
@@ -53,7 +53,11 @@ export default {
   computed: {
     ...mapState(['user']),
   },
-  watch: {},
+  watch: {
+    history() {
+      setItem('search-history', this.history)
+    },
+  },
   created() {
     this.loadHistory()
   },
@@ -71,7 +75,7 @@ export default {
       this.history.unshift(this.searchText)
 
       // 将搜索历史存储本地
-      setItem('search-history', this.history)
+      // setItem('search-history', this.history) // 使用 watch 替代
     },
 
     async loadHistory() {
