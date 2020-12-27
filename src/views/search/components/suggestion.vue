@@ -37,7 +37,7 @@ export default {
       handler: debounce(async function() {
         const res = await getSuggestion(this.searchText)
         this.suggestions = res.data.data.options
-        console.log(this.suggestions)
+        // console.log(this.suggestions)
       }, 500),
       immediate: true,
     },

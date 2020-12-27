@@ -17,3 +17,10 @@ export const getResult = params => {
     params,
   })
 }
+
+export const getHistory = () => {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/search/histories',
+  })
+}

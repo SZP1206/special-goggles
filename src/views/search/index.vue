@@ -35,6 +35,9 @@
 import History from './components/history.vue'
 import Result from './components/result.vue'
 import Suggestion from './components/suggestion.vue'
+import { setItem, getItem } from '@/utils/storage'
+import { mapState } from 'vuex'
+import { getHistory } from '@/api/search'
 
 export default {
   name: 'SearchIndex',
@@ -47,9 +50,13 @@ export default {
       history: [],
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user']),
+  },
   watch: {},
-  created() {},
+  created() {
+    this.loadHistory()
+  },
   mounted() {},
   methods: {
     onSearch(searchText) {
@@ -62,6 +69,26 @@ export default {
         this.history.splice(index, 1)
       }
       this.history.unshift(this.searchText)
+
+      // 将搜索历史存储本地
+      setItem('search-history', this.history)
+    },
+
+    async loadHistory() {
+      // 获取本地搜索历史
+      const localHistory = getItem('search-history')
+
+      // 如果已登录，获取线上搜索历史
+      if (this.user) {
+        const { data } = await getHistory()
+        const onlineHistory = data.data.keywords
+
+        // 数组去重
+        this.history = [...new Set([...localHistory, ...onlineHistory])]
+      } else {
+        // 未登录，获取本地搜索历史
+        this.history = localHistory
+      }
     },
   },
 }
