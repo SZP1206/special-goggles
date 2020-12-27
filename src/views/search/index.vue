@@ -23,7 +23,12 @@
     <!-- onSearch($event) === onSearch 【不加括号】 -->
 
     <!-- 历史记录 -->
-    <history v-else :history="history" @search="onSearch"></history>
+    <history
+      v-else
+      :history="history"
+      @search="onSearch"
+      @delete="deleteHistory"
+    ></history>
 
     <!-- 1、suggestion 和 history 二选一，条件是“输入框是否为空”【二选一，置于判断的末尾】
     2、search 事件切换 result 的展示和隐藏。
@@ -37,7 +42,7 @@ import Result from './components/result.vue'
 import Suggestion from './components/suggestion.vue'
 import { setItem, getItem } from '@/utils/storage'
 import { mapState } from 'vuex'
-import { getHistory } from '@/api/search'
+import { getHistory, deleteAllHistory } from '@/api/search'
 
 export default {
   name: 'SearchIndex',
@@ -93,6 +98,12 @@ export default {
         // 未登录，获取本地搜索历史
         this.history = localHistory
       }
+    },
+
+    async deleteHistory() {
+      await deleteAllHistory()
+
+      this.history = []
     },
   },
 }

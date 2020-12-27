@@ -24,3 +24,10 @@ export const getHistory = () => {
     url: '/app/v1_0/search/histories',
   })
 }
+
+export const deleteAllHistory = () => {
+  return request({
+    method: 'DELETE',
+    url: '/app/v1_0/search/histories',
+  })
+}
