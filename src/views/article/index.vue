@@ -28,12 +28,34 @@
     </van-cell>
 
     <div ref="content" class="markdown-body" v-html="article.content"></div>
+
+    <div class="bottom">
+      <van-button plain round>写评论</van-button>
+      <van-icon name="comment-o" badge="9" />
+      <van-icon
+        :name="article.is_collected ? 'star' : 'star-o'"
+        :color="article.is_collected ? 'orange' : ''"
+        @click="collect"
+      />
+      <van-icon
+        :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
+        :color="article.attitude === 1 ? '#1989fa' : ''"
+        @click="like"
+      />
+      <van-icon name="share" />
+    </div>
   </div>
 </template>
 
 <script>
 import './github-markdown.css'
-import { getArticleById } from '@/api/article'
+import {
+  getArticleById,
+  likeArticle,
+  unlikeArticle,
+  collectArticle,
+  uncollectArticle,
+} from '@/api/article'
 import { ImagePreview } from 'vant'
 import { followAuthor, unfollowAuthor } from '@/api/user'
 
@@ -49,7 +71,10 @@ export default {
   data() {
     return {
       article: {},
+
+      // 按钮 loading 状态
       isBtnLoading: false,
+      isCollectLoading: false,
     }
   },
   computed: {},
@@ -103,6 +128,50 @@ export default {
       this.isBtnLoading = false
       // 接口有问题，刷新后发现数据未持久化。Network里状态码返回正确。
     },
+
+    async like() {
+      this.$toast.loading({
+        message: '操作中...',
+        forbidClick: true,
+      })
+
+      if (this.article.attitude === 0 || this.article.attitude === -1) {
+        const res = await likeArticle(this.articleId)
+        console.log('like', res)
+        if (res.status === 201) {
+          this.article.attitude = 1
+          // api 有问题，status正常，实际上数据未持久化
+        }
+      } else {
+        const res = await unlikeArticle(this.articleId)
+        console.log('unlike', res)
+        if (res.status === 204) {
+          this.article.attitude = -1
+          // api 有问题，status正常，实际上数据未持久化
+        }
+      }
+    },
+
+    async collect() {
+      this.$toast.loading({
+        message: '操作中...',
+        forbidClick: true,
+      })
+
+      if (this.article.is_collected) {
+        const res = await uncollectArticle(this.articleId)
+        console.log('un', res)
+        if (res.status === 204) {
+          this.article.is_collected = false
+        }
+      } else {
+        const res = await collectArticle(this.articleId)
+        console.log(res)
+        if (res.status === 201) {
+          this.article.is_collected = true
+        }
+      }
+    },
   },
 }
 </script>
@@ -140,6 +209,32 @@ export default {
 
   .markdown-body {
     padding: 14px;
+  }
+
+  .bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    height: 44px;
+    border-top: 1px solid #d8d8d8;
+    .van-button {
+      width: 141px;
+      height: 23px;
+      border: 1px solid #ffffff;
+      .van-button__text {
+        font-size: 15px;
+        line-height: 23px;
+        color: #a7a7a7;
+      }
+    }
+    .van-icon {
+      font-size: 26px;
+    }
   }
 }
 </style>
