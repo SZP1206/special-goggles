@@ -2,48 +2,51 @@
   <div class="article-container">
     <van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
 
-    <h1 class="title">文章标题</h1>
+    <h1 class="title">{{ article.title }}</h1>
 
-    <van-cell class="auth-info" title="作者" label="1小时前" center>
+    <van-cell
+      class="auth-info"
+      :title="article.aut_name"
+      :label="article.pubdate | relativeTime"
+      center
+    >
       <template #icon>
-        <van-image round fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image round fit="cover" :src="article.aut_photo" />
       </template>
       <template #right-icon>
-        <van-button round type="info" icon="plus">关注</van-button>
+        <van-button
+          round
+          type="info"
+          :plain="article.is_followed"
+          :icon="article.is_followed ? 'success' : 'plus'"
+        >
+          {{ article.is_followed ? '已关注' : '关注' }}
+        </van-button>
       </template>
     </van-cell>
 
-    <div class="markdown-body">
-      <h3>这是标题</h3>
-      <p>
-        这是内容，这是内容。 这是内容，这是内容。
-      </p>
-      <a href="#">
-        www.google.com
-      </a>
-      <ol>
-        <li>1</li>
-        <li>2</li>
-      </ol>
-    </div>
+    <div ref="content" class="markdown-body" v-html="article.content"></div>
   </div>
 </template>
 
 <script>
 import './github-markdown.css'
 import { getArticleById } from '@/api/article'
+import { ImagePreview } from 'vant'
 
 export default {
   name: 'ArticleIndex',
   components: {},
   props: {
     articleId: {
-      type: [String, Number],
+      type: [String, Number, Object],
       required: true,
     },
   },
   data() {
-    return {}
+    return {
+      article: {},
+    }
   },
   computed: {},
   watch: {},
@@ -53,8 +56,32 @@ export default {
   mounted() {},
   methods: {
     async loadArticle() {
-      const res = await getArticleById(this.articleId)
-      console.log(res)
+      const { data } = await getArticleById(this.articleId)
+      this.article = data.data
+      console.log(this.article)
+
+      // 操作 DOM
+      this.$nextTick(() => {
+        this.handleImagePreview()
+      })
+    },
+
+    handleImagePreview() {
+      // 获取所有 img 标签
+      const imgs = this.$refs.content.querySelectorAll('img')
+
+      const imgPaths = []
+      imgs.forEach((img, index) => {
+        imgPaths.push(img.src)
+
+        img.onclick = () => {
+          ImagePreview({
+            images: imgPaths,
+            startPosition: index,
+          })
+        }
+      })
+      console.log(imgPaths)
     },
   },
 }
@@ -86,6 +113,7 @@ export default {
       }
     }
     .van-button {
+      width: 95px;
       height: 40px;
     }
   }
