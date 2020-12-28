@@ -12,10 +12,26 @@
         <van-button round type="info" icon="plus">关注</van-button>
       </template>
     </van-cell>
+
+    <div class="markdown-body">
+      <h3>这是标题</h3>
+      <p>
+        这是内容，这是内容。 这是内容，这是内容。
+      </p>
+      <a href="#">
+        www.google.com
+      </a>
+      <ol>
+        <li>1</li>
+        <li>2</li>
+      </ol>
+    </div>
   </div>
 </template>
 
 <script>
+import './github-markdown.css'
+
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -37,30 +53,37 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.title {
-  font-size: 20px;
-  color: #3a3a3a;
-  padding: 14px;
-}
+.article-container {
+  .title {
+    font-size: 20px;
+    color: #3a3a3a;
+    padding: 14px;
+    margin: 0;
+  }
 
-.auth-info {
-  .van-image {
-    width: 45px;
-    height: 45px;
-    margin-right: 9px;
-  }
-  .van-cell__title {
-    span {
-      font-size: 14px;
-      color: #333333;
+  .auth-info {
+    .van-image {
+      width: 45px;
+      height: 45px;
+      margin-right: 9px;
     }
-    .van-cell__label {
-      font-size: 12px;
-      color: #b4b4b4;
+    .van-cell__title {
+      span {
+        font-size: 14px;
+        color: #333333;
+      }
+      .van-cell__label {
+        font-size: 12px;
+        color: #b4b4b4;
+      }
+    }
+    .van-button {
+      height: 40px;
     }
   }
-  .van-button {
-    height: 40px;
+
+  .markdown-body{
+    padding: 14px;
   }
 }
 </style>
