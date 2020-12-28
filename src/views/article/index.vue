@@ -19,6 +19,8 @@
           type="info"
           :plain="article.is_followed"
           :icon="article.is_followed ? 'success' : 'plus'"
+          :loading="isBtnLoading"
+          @click="onFollow"
         >
           {{ article.is_followed ? '已关注' : '关注' }}
         </van-button>
@@ -33,6 +35,7 @@
 import './github-markdown.css'
 import { getArticleById } from '@/api/article'
 import { ImagePreview } from 'vant'
+import { followAuthor, unfollowAuthor } from '@/api/user'
 
 export default {
   name: 'ArticleIndex',
@@ -46,6 +49,7 @@ export default {
   data() {
     return {
       article: {},
+      isBtnLoading: false,
     }
   },
   computed: {},
@@ -81,7 +85,23 @@ export default {
           })
         }
       })
-      console.log(imgPaths)
+    },
+
+    async onFollow() {
+      // 防止多次点击
+      this.isBtnLoading = true
+
+      if (this.article.is_followed) {
+        await unfollowAuthor(this.article.aut_id)
+        console.log('unfo')
+      } else {
+        await followAuthor(this.article.aut_id)
+        console.log('fo')
+      }
+      this.article.is_followed = !this.article.is_followed
+
+      this.isBtnLoading = false
+      // 接口有问题，刷新后发现数据未持久化。Network里状态码返回正确。
     },
   },
 }
