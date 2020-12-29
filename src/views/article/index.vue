@@ -31,7 +31,7 @@
       <div ref="content" class="markdown-body" v-html="article.content"></div>
 
       <!-- 评论组件 -->
-      <comment-list></comment-list>
+      <comment-list :articleId="articleId"></comment-list>
     </div>
 
     <div class="bottom">
