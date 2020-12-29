@@ -22,3 +22,28 @@ export const getComment = (type, source, offset, limit) => {
     },
   })
 }
+
+/**
+ *
+ * @param {int} target 点赞的评论id
+ */
+export const likeComment = target => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/comment/likings',
+    data: {
+      target,
+    },
+  })
+}
+
+/**
+ *
+ * @param {int} target 要取消点赞的评论id或评论回复id
+ */
+export const unlikeComment = target => {
+  return request({
+    method: 'DELETE',
+    url: `/app/v1_0/comment/likings/${target}`,
+  })
+}

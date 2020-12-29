@@ -6,21 +6,23 @@
       finished-text="我是有底线的"
       @load="onLoad"
     >
-      <van-cell
+      <!-- 评论项组件 -->
+      <comment-item
         v-for="(comment, index) in commentList"
         :key="index"
-        :title="comment.content"
-      />
+        :comment="comment"
+      ></comment-item>
     </van-list>
   </div>
 </template>
 
 <script>
 import { getComment } from '@/api/comment'
+import CommentItem from './comment-item.vue'
 
 export default {
   name: 'CommentList',
-  components: {},
+  components: { CommentItem },
   props: {
     articleId: {
       type: String, // 测试文章：http://localhost:8080/#/article/140755
