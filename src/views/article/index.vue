@@ -1,33 +1,38 @@
 <template>
   <div class="article-container">
-    <van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
+    <div class="top">
+      <van-nav-bar title="文章详情" left-arrow @click-left="$router.back()" />
 
-    <h1 class="title">{{ article.title }}</h1>
+      <h1 class="title">{{ article.title }}</h1>
 
-    <van-cell
-      class="auth-info"
-      :title="article.aut_name"
-      :label="article.pubdate | relativeTime"
-      center
-    >
-      <template #icon>
-        <van-image round fit="cover" :src="article.aut_photo" />
-      </template>
-      <template #right-icon>
-        <van-button
-          round
-          type="info"
-          :plain="article.is_followed"
-          :icon="article.is_followed ? 'success' : 'plus'"
-          :loading="isBtnLoading"
-          @click="onFollow"
-        >
-          {{ article.is_followed ? '已关注' : '关注' }}
-        </van-button>
-      </template>
-    </van-cell>
+      <van-cell
+        class="auth-info"
+        :title="article.aut_name"
+        :label="article.pubdate | relativeTime"
+        center
+      >
+        <template #icon>
+          <van-image round fit="cover" :src="article.aut_photo" />
+        </template>
+        <template #right-icon>
+          <van-button
+            round
+            type="info"
+            :plain="article.is_followed"
+            :icon="article.is_followed ? 'success' : 'plus'"
+            :loading="isBtnLoading"
+            @click="onFollow"
+          >
+            {{ article.is_followed ? '已关注' : '关注' }}
+          </van-button>
+        </template>
+      </van-cell>
 
-    <div ref="content" class="markdown-body" v-html="article.content"></div>
+      <div ref="content" class="markdown-body" v-html="article.content"></div>
+
+      <!-- 评论组件 -->
+      <comment-list></comment-list>
+    </div>
 
     <div class="bottom">
       <van-button plain round>写评论</van-button>
@@ -58,10 +63,13 @@ import {
 } from '@/api/article'
 import { ImagePreview } from 'vant'
 import { followAuthor, unfollowAuthor } from '@/api/user'
+import CommentList from './components/comment-list.vue'
 
 export default {
   name: 'ArticleIndex',
-  components: {},
+  components: {
+    CommentList,
+  },
   props: {
     articleId: {
       type: [String, Number, Object],
@@ -133,6 +141,7 @@ export default {
       this.$toast.loading({
         message: '操作中...',
         forbidClick: true,
+        duration: 1000,
       })
 
       if (this.article.attitude === 0 || this.article.attitude === -1) {
@@ -156,6 +165,7 @@ export default {
       this.$toast.loading({
         message: '操作中...',
         forbidClick: true,
+        duration: 1000,
       })
 
       if (this.article.is_collected) {
@@ -178,37 +188,45 @@ export default {
 
 <style lang="less" scoped>
 .article-container {
-  .title {
-    font-size: 20px;
-    color: #3a3a3a;
-    padding: 14px;
-    margin: 0;
-  }
+  .top {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 44px;
+    overflow-y: auto;
+    .title {
+      font-size: 20px;
+      color: #3a3a3a;
+      padding: 14px;
+      margin: 0;
+    }
 
-  .auth-info {
-    .van-image {
-      width: 45px;
-      height: 45px;
-      margin-right: 9px;
-    }
-    .van-cell__title {
-      span {
-        font-size: 14px;
-        color: #333333;
+    .auth-info {
+      .van-image {
+        width: 45px;
+        height: 45px;
+        margin-right: 9px;
       }
-      .van-cell__label {
-        font-size: 12px;
-        color: #b4b4b4;
+      .van-cell__title {
+        span {
+          font-size: 14px;
+          color: #333333;
+        }
+        .van-cell__label {
+          font-size: 12px;
+          color: #b4b4b4;
+        }
+      }
+      .van-button {
+        width: 95px;
+        height: 40px;
       }
     }
-    .van-button {
-      width: 95px;
-      height: 40px;
-    }
-  }
 
-  .markdown-body {
-    padding: 14px;
+    .markdown-body {
+      padding: 14px;
+    }
   }
 
   .bottom {
@@ -222,6 +240,7 @@ export default {
     box-sizing: border-box;
     height: 44px;
     border-top: 1px solid #d8d8d8;
+    background-color: #ffffff;
     .van-button {
       width: 141px;
       height: 23px;
