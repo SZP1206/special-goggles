@@ -206,6 +206,9 @@ export default {
     // 评论发布成功
     postSuccess(newComment) {
       this.commentList.unshift(newComment)
+
+      // 关闭组件显示
+      this.isPostShow = false
     },
   },
 }
