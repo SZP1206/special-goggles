@@ -9,3 +9,7 @@ Dayjs.extend(relativeTime)
 Vue.filter('relativeTime', value => {
   return Dayjs(value).fromNow()
 })
+
+Vue.filter('commentTime', (value, format = 'YYYY-MM-DD HH:mm:ss') => {
+  return Dayjs(value).format(format)
+})

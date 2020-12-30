@@ -28,3 +28,20 @@ export const getChannels = () => {
     url: '/app/v1_0/user/channels',
   })
 }
+
+export const followAuthor = target => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/user/followings',
+    data: {
+      target,
+    },
+  })
+}
+
+export const unfollowAuthor = target => {
+  return request({
+    method: 'DELETE',
+    url: `/app/v1_0/user/followings/${target}`,
+  })
+}
