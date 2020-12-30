@@ -35,7 +35,7 @@
     </div>
 
     <div class="bottom">
-      <van-button plain round>写评论</van-button>
+      <van-button plain round @click="isPostShow = true">写评论</van-button>
       <van-icon name="comment-o" badge="9" />
       <van-icon
         :name="article.is_collected ? 'star' : 'star-o'"
@@ -49,6 +49,16 @@
       />
       <van-icon name="share" />
     </div>
+
+    <van-popup
+      v-model="isPostShow"
+      position="bottom"
+      :style="{ height: '30%' }"
+    >
+      <!-- 发表评论组件 -->
+      <post-reply :articleId="articleId"></post-reply>
+      <!-- 发表评论组件 -->
+    </van-popup>
   </div>
 </template>
 
@@ -64,11 +74,13 @@ import {
 import { ImagePreview } from 'vant'
 import { followAuthor, unfollowAuthor } from '@/api/user'
 import CommentList from './components/comment-list.vue'
+import PostReply from './components/post-reply.vue'
 
 export default {
   name: 'ArticleIndex',
   components: {
     CommentList,
+    PostReply,
   },
   props: {
     articleId: {
@@ -83,6 +95,7 @@ export default {
       // 按钮 loading 状态
       isBtnLoading: false,
       isCollectLoading: false,
+      isPostShow: false,
     }
   },
   computed: {},

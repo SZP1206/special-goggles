@@ -29,13 +29,6 @@
           {{ comment.reply_count }}回复</van-button
         >
       </template>
-
-      <template #right-icon>
-        <!-- <div>
-          <van-icon name="good-job-o" />
-          <span>12</span>
-        </div> -->
-      </template>
     </van-cell>
   </div>
 </template>
@@ -62,13 +55,13 @@ export default {
   methods: {
     async onLike() {
       if (this.comment.is_liking) {
-        const res = await unlikeComment(this.comment.com_id)
+        const res = await unlikeComment(this.comment.com_id.toString())
         console.log('取消', res)
         if (res.status === 204) {
           this.comment.is_liking = !this.comment.is_liking
         }
       } else {
-        const res = await likeComment(this.comment.com_id)
+        const res = await likeComment(this.comment.com_id.toString())
         console.log('点赞', res)
         if (res.status === 201) {
           this.comment.is_liking = !this.comment.is_liking

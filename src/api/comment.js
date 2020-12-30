@@ -47,3 +47,21 @@ export const unlikeComment = target => {
     url: `/app/v1_0/comment/likings/${target}`,
   })
 }
+
+/**
+ *
+ * @param {Integer} target 评论的目标id（评论文章即为文章id，对评论进行回复则为评论id）
+ * @param {String} content 评论内容
+ * @param {*} art_id 文章id，对评论内容发表回复时，需要传递此参数，表明所属文章id。对文章进行评论，不要传此参数。
+ */
+export const postReply = (target, content, artId) => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/comments',
+    data: {
+      target,
+      content,
+      art_id: artId,
+    },
+  })
+}
