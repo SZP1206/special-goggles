@@ -31,7 +31,10 @@
       <div ref="content" class="markdown-body" v-html="article.content"></div>
 
       <!-- 评论组件 -->
-      <comment-list :articleId="articleId"></comment-list>
+      <comment-list
+        :articleId="articleId"
+        :commentList="commentList"
+      ></comment-list>
     </div>
 
     <div class="bottom">
@@ -56,7 +59,10 @@
       :style="{ height: '30%' }"
     >
       <!-- 发表评论组件 -->
-      <post-reply :articleId="articleId"></post-reply>
+      <post-reply
+        :articleId="articleId"
+        @post-success="postSuccess($event)"
+      ></post-reply>
       <!-- 发表评论组件 -->
     </van-popup>
   </div>
@@ -96,6 +102,7 @@ export default {
       isBtnLoading: false,
       isCollectLoading: false,
       isPostShow: false,
+      commentList: [],
     }
   },
   computed: {},
@@ -194,6 +201,11 @@ export default {
           this.article.is_collected = true
         }
       }
+    },
+
+    // 评论发布成功
+    postSuccess(newComment) {
+      this.commentList.unshift(newComment)
     },
   },
 }

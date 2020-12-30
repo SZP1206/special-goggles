@@ -43,6 +43,8 @@ export default {
         this.$toast.error('评论失败，请稍后重试')
       } else {
         this.$toast.success('评论成功')
+
+        this.$emit('post-success', res.data.data.new_obj)
       }
     },
   },

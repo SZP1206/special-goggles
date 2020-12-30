@@ -28,10 +28,17 @@ export default {
       type: String, // 测试文章：http://localhost:8080/#/article/140755
       required: true,
     },
+
+    // 原data中的commentList
+    commentList: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
-      commentList: [], // 一级评论列表
+      // 在父组件中保存 在props中声明
+      // commentList: [], // 一级评论列表
       loading: false,
       finished: false,
       offset: null,
