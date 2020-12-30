@@ -34,12 +34,13 @@
       <comment-list
         :articleId="articleId"
         :commentList="commentList"
+        @total-comment="totalComment = $event"
       ></comment-list>
     </div>
 
     <div class="bottom">
       <van-button plain round @click="isPostShow = true">写评论</van-button>
-      <van-icon name="comment-o" badge="9" />
+      <van-icon name="comment-o" :badge="totalComment" />
       <van-icon
         :name="article.is_collected ? 'star' : 'star-o'"
         :color="article.is_collected ? 'orange' : ''"
@@ -103,6 +104,9 @@ export default {
       isCollectLoading: false,
       isPostShow: false,
       commentList: [],
+
+      // 总评论数
+      totalComment: '',
     }
   },
   computed: {},
@@ -209,6 +213,8 @@ export default {
 
       // 关闭组件显示
       this.isPostShow = false
+
+      this.totalComment++
     },
   },
 }

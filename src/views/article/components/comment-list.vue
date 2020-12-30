@@ -60,6 +60,8 @@ export default {
       )
       console.log(data)
 
+      this.$emit('total-comment', data.data.total_count)
+
       this.commentList.push(...data.data.results)
       this.loading = false
 
