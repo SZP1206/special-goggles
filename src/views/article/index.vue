@@ -35,6 +35,7 @@
         :articleId="articleId"
         :commentList="commentList"
         @total-comment="totalComment = $event"
+        @reply-click="onReplyClick"
       ></comment-list>
     </div>
 
@@ -66,6 +67,14 @@
       ></post-reply>
       <!-- 发表评论组件 -->
     </van-popup>
+
+    <van-popup
+      v-model="isReplyCommentShow"
+      position="bottom"
+      :style="{ height: '30%' }"
+    >
+      <reply-comment></reply-comment>
+    </van-popup>
   </div>
 </template>
 
@@ -82,12 +91,14 @@ import { ImagePreview } from 'vant'
 import { followAuthor, unfollowAuthor } from '@/api/user'
 import CommentList from './components/comment-list.vue'
 import PostReply from './components/post-reply.vue'
+import ReplyComment from './components/reply-comment.vue'
 
 export default {
   name: 'ArticleIndex',
   components: {
     CommentList,
     PostReply,
+    ReplyComment,
   },
   props: {
     articleId: {
@@ -107,6 +118,9 @@ export default {
 
       // 总评论数
       totalComment: '',
+
+      // 回复评论组件的显示和隐藏
+      isReplyCommentShow: false,
     }
   },
   computed: {},
@@ -215,6 +229,12 @@ export default {
       this.isPostShow = false
 
       this.totalComment++
+    },
+
+    // 回复评论
+    onReplyClick(comment) {
+      console.log(comment)
+      this.isReplyCommentShow = true
     },
   },
 }
